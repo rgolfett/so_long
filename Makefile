@@ -8,7 +8,7 @@ OBJS =	$(SRCS:%.c=%.o)
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -Werror -g -Iminilibx-linux
+CFLAGS = -Wall -Wextra -g -Iminilibx-linux
 
 all : $(NAME)
 
@@ -31,3 +31,4 @@ re : fclean all
 	$(CC) -c $(CFLAGS) $< -o $@
 
 .PHONY = all clean fclean re
+		
