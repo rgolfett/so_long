@@ -1,6 +1,12 @@
 NAME = so_long
 
-SRCS = main.c
+SRCS = main.c \
+	ft_memset.c \
+	ft_parsing.c \
+	ft_strchr.c \
+	get_next_line.c \
+	get_next_line_utils.c \
+	
 
 INCLUDES =	
 

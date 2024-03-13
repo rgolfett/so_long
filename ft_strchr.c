@@ -1,29 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_memset.c                                        :+:      :+:    :+:   */
+/*   ft_strchr.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rgolfett <rgolfett@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/11/09 06:46:09 by rgolfett          #+#    #+#             */
-/*   Updated: 2024/03/13 12:31:32 by rgolfett         ###   ########lyon.fr   */
+/*   Created: 2023/11/09 09:29:37 by rgolfett          #+#    #+#             */
+/*   Updated: 2024/03/13 11:28:01 by rgolfett         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-void	*ft_memset(void *s, int c, size_t size)
+char	*ft_strchr(const char *string, int search)
 {
-	size_t			i;
-	unsigned char	*str;
+	size_t	i;
+	char	chr;
 
+	chr = search % 256;
 	i = 0;
-	str = (unsigned char *)s;
-	while (size > 0)
+	while (string[i])
 	{
-		str[i] = c;
+		if (string[i] == chr)
+			return ((char *)&string[i]);
 		i++;
-		size--;
 	}
-	return (str);
+	if (!chr)
+		return ((char *)&string[i]);
+	return (NULL);
 }

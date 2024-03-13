@@ -6,88 +6,34 @@
 /*   By: rgolfett <rgolfett@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 19:22:16 by rgolfett          #+#    #+#             */
-/*   Updated: 2024/03/12 23:11:22 by rgolfett         ###   ########lyon.fr   */
+/*   Updated: 2024/03/13 12:31:52 by rgolfett         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "mlx.h"
-#include <stdio.h>
-#include <stdlib.h>
-#include <stddef.h>
 
-#define KEY_W 119
-#define KEY_A 97
-#define KEY_S 115
-#define KEY_D 100
-#define KEY_ESC 65307
-
-#define BLACK	0x000000
-#define WHITE	0xffffff
-#define RED		0xff0000
-#define GREEN	0x00ff00
-#define BLUE	0x0000ff
-
-#define img_width = 720
-#define img_height = 480
-
-typedef	struct s_img
-{
-	void *img;
-	unsigned int *data_addr;
-	int width;
-	int height;
-} t_img;
-
-typedef struct s_player
-{
-	//t_img img;
-	int	x;
-	int	y;
-} t_player;
-
-typedef struct	s_vars {
-	void	*mlx;
-	void	*win;
-	t_img	img;
-	t_player player;
-} t_vars;
-
-void	*ft_memset(void *s, int c, size_t size)
-{
-	size_t			i;
-	unsigned char	*str;
-
-	i = 0;
-	str = (unsigned char *)s;
-	while (size > 0)
-	{
-		str[i] = c;
-		i++;
-		size--;
-	}
-	return (str);
-}
+#include "so_long.h"
+#include "get_next_line.h"
 
 void	ft_clear_image(t_img img)
 {
 	ft_memset(img.data_addr, 0, sizeof(unsigned int) * (img.height * img.width));
 }
 
-void ft_draw_player(t_img img, t_player player)
+void ft_draw_object(t_img img, t_object object, unsigned int color)
 {
 	int tmp;
-	int width_sq = 50 + player.x;
-	int height_sq = 50 + player.y;
-	while (player.y < height_sq)
+	int width_sq = 50 + object.x;
+	int height_sq = 50 + object.y;
+	while (object.y < height_sq)
 	{
-		tmp = player.x;
-		while (player.x < width_sq)
+		tmp = object.x;
+		while (object.x < width_sq)
 		{
-			img.data_addr[player.y * img.width + player.x] = RED;
-			player.x++;
+			img.data_addr[object.y * img.width + object.x] = color;
+			object.x++;
 		}
-		player.y++;
-		player.x = tmp;
+		object.y++;
+		object.x = tmp;
 	}
 }
 
@@ -141,9 +87,17 @@ void	on_key_press(int key, void *param)
 		printf("ESC\n");
 		mlx_loop_end(vars->mlx);
 	}
+	if (vars->player.y > 430)
+		vars->player.y = 430;
+	if (vars->player.y < 0)
+		vars->player.y = 0;
+	if (vars->player.x > 670)
+		vars->player.x = 670;
+	if (vars->player.x < 0)
+		vars->player.x = 0;
 	ft_clear_image(vars->img);
+	ft_draw_object(vars->img, vars->player, RED);
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->img.img, 0, 0);
-	ft_draw_player(vars->img, vars->player);
 	printf("key = %i\n", key);
 }
 
@@ -152,22 +106,17 @@ int	main()
 	t_vars	vars;
 
 	
-	vars.player.x = 300;
-	vars.player.y = 400;
+	vars.player.x = 0;
+	vars.player.y = 0;
  	vars.mlx = mlx_init();
 	if (vars.mlx == (void*)0)
 		return (-1);
+	ft_map_check();
 	vars.win = mlx_new_window(vars.mlx, 720, 480, "title");
 	vars.img = create_img(vars.mlx, vars.img, 720, 480);
-	ft_draw_player(vars.img, vars.player);
+	ft_draw_object(vars.img, vars.player, RED);	
 	mlx_put_image_to_window(vars.mlx, vars.win, vars.img.img, 0, 0);
 	mlx_key_hook(vars.win, (void *)on_key_press, &vars);
 	mlx_loop(vars.mlx);
 	return (0);
 }
-// w = 119
-// a = 97
-// s = 115
-// d = 100
-
-// esc = 65307
