@@ -6,7 +6,7 @@
 /*   By: rgolfett <rgolfett@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 19:22:16 by rgolfett          #+#    #+#             */
-/*   Updated: 2024/03/13 12:31:52 by rgolfett         ###   ########lyon.fr   */
+/*   Updated: 2024/03/14 22:23:03 by rgolfett         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,20 @@ void ft_draw_object(t_img img, t_object object, unsigned int color)
 	}
 }
 
+t_img	load_img(void *mlx, t_img img, char *texture)
+{
+	int bits_per_pixel;
+	int size_line;
+	int endian;
+
+	img.img = mlx_xpm_file_to_image(mlx, texture, &img.width, &img.height);
+	img.data_addr = mlx_get_data_addr(img.img, &bits_per_pixel, &size_line, &endian);
+	//printf("floor img = %p\n", img.img);
+	return (img);
+}
+
 t_img	create_img(void *mlx, t_img img, int width, int height)
 {
-	void *window_img;
-	unsigned int *data_addr;
 	int bits_per_pixel;
 	int size_line;
 	int endian;
@@ -50,23 +60,54 @@ t_img	create_img(void *mlx, t_img img, int width, int height)
 	img.width = width;
 	img.height = height;
 	return (img);
-	// draw_line
-	// int i = 500;
-	// while (i < width * height)
-	// {
-	// 		data_addr[i] = RED;			
-	// 	i += width;
-	// }
-	
-	// int y = 0;
-	// int x = 500;
-	// while (y < height)
-	// {
-	// 	data_addr[y * width + x] = RED;
-	// 	y++;	
-	// }
 
+}
+void	ft_check_exit_condition(t_vars vars)
+{
+	char **map;
+	int x;
+	int	y;
+	int collectibles;
 
+	x = 0;
+	y = 0;
+	collectibles = 0;
+	map = vars.map.map;
+	if (map[vars.player.y / 50][vars.player.x / 50] == 'E')
+	{
+		while (map[y])
+		{
+			while (map[y][x])
+			{
+				if (map[y][x] == 'C')
+					return ;
+				x++;
+			}
+			y++;
+			x = 0;
+		}
+		mlx_loop_end(vars.mlx);
+	}
+}
+
+void	ft_check_collectible_pos(t_vars vars)
+{
+	char **map;
+
+	map = vars.map.map;
+	if (map[vars.player.y / 50][vars.player.x / 50] == 'C')
+		map[vars.player.y / 50][vars.player.x / 50] = '0';
+
+}
+
+int	ft_check_player_pos(t_vars vars)
+{
+	char **map;
+
+	map = vars.map.map;
+	if (map[vars.player.y / 50][vars.player.x / 50] == '1')
+		return (-1);
+	return (0);
 }
 
 void	on_key_press(int key, void *param)
@@ -74,47 +115,96 @@ void	on_key_press(int key, void *param)
 	t_vars *vars;
 
 	vars = ((t_vars *)param);
+	printf("p floor img = %p\n", vars->floor.img);
 	if (key == KEY_W)
+	{
 		vars->player.y -= 50;
+		if (ft_check_player_pos(*vars) == -1)
+			vars->player.y += 50;
+		else
+		{
+			vars->movement++;
+			ft_putnbr_fd(vars->movement);			
+		}
+
+	}
 	if (key == KEY_A)
+	{
 		vars->player.x -= 50;
+		if (ft_check_player_pos(*vars) == -1)
+			vars->player.x += 50;
+		else
+		{
+			vars->movement++;
+			ft_putnbr_fd(vars->movement);			
+		}
+	}
 	if (key == KEY_S)
+	{
 		vars->player.y += 50;
+		if (ft_check_player_pos(*vars) == -1)
+			vars->player.y -= 50;
+		else
+		{
+			vars->movement++;
+			ft_putnbr_fd(vars->movement);			
+		}
+	}
+	
 	if (key == KEY_D)
+	{
 		vars->player.x += 50;
+		if (ft_check_player_pos(*vars) == -1)
+			vars->player.x -= 50;
+		else
+		{
+			vars->movement++;
+			ft_putnbr_fd(vars->movement);			
+		}
+	}
 	if (key == KEY_ESC)
 	{
 		printf("ESC\n");
 		mlx_loop_end(vars->mlx);
 	}
-	if (vars->player.y > 430)
-		vars->player.y = 430;
+	ft_check_collectible_pos(*vars);
+	ft_check_exit_condition(*vars);
+	if (vars->player.y > (vars->map.h * 50) - 50)
+		vars->player.y = (vars->map.h * 50) - 50;
 	if (vars->player.y < 0)
 		vars->player.y = 0;
-	if (vars->player.x > 670)
-		vars->player.x = 670;
+	if (vars->player.x > (vars->map.w * 50) - 50)
+		vars->player.x = (vars->map.w * 50) - 50;
 	if (vars->player.x < 0)
 		vars->player.x = 0;
 	ft_clear_image(vars->img);
-	ft_draw_object(vars->img, vars->player, RED);
+	ft_display_map(*vars);
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->img.img, 0, 0);
-	printf("key = %i\n", key);
 }
 
 int	main()
 {
 	t_vars	vars;
-
 	
+	vars.movement = 0;
 	vars.player.x = 0;
 	vars.player.y = 0;
  	vars.mlx = mlx_init();
 	if (vars.mlx == (void*)0)
 		return (-1);
-	ft_map_check();
-	vars.win = mlx_new_window(vars.mlx, 720, 480, "title");
-	vars.img = create_img(vars.mlx, vars.img, 720, 480);
-	ft_draw_object(vars.img, vars.player, RED);	
+	vars.map.map = ft_create_map(&vars.map.w, &vars.map.h);
+	vars.win = mlx_new_window(vars.mlx, (vars.map.w * 50), (vars.map.h * 50), "so_long");
+	vars.img = create_img(vars.mlx, vars.img, (vars.map.w * 50), (vars.map.h * 50));
+	vars.floor = load_img(vars.mlx, vars.floor, "touch-grass.xpm");
+	vars.wall = load_img(vars.mlx, vars.wall, "bush.xpm");
+	vars.collectible = load_img(vars.mlx, vars.collectible, "pomegrenade.xpm");
+	vars.player_tex = load_img(vars.mlx, vars.player_tex, "baby_gryff.xpm");
+	vars.exit = load_img(vars.mlx, vars.exit, "exit.xpm");
+	ft_find_player(vars, &vars.player.x, &vars.player.y);
+	vars.map.map[vars.player.y][vars.player.x] = '0';
+	vars.player.x *= 50;
+	vars.player.y *= 50;
+	ft_display_map(vars);
 	mlx_put_image_to_window(vars.mlx, vars.win, vars.img.img, 0, 0);
 	mlx_key_hook(vars.win, (void *)on_key_press, &vars);
 	mlx_loop(vars.mlx);

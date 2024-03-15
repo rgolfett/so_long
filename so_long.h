@@ -18,8 +18,8 @@
 # define GREEN	0x00ff00
 # define BLUE	0x0000ff
 
-#define img_width = 720
-#define img_height = 480
+#define img_width 720
+#define img_height 480
 
 typedef	struct s_img
 {
@@ -31,20 +31,38 @@ typedef	struct s_img
 
 typedef struct s_object
 {
-	//t_img img;
+	char *texture;
 	int	x;
 	int	y;
 } t_object;
 
+typedef struct s_map
+{
+	char **map;
+	int w;
+	int h;
+} t_map;
+
+
 typedef struct	s_vars {
 	void	*mlx;
 	void	*win;
+	int	movement;
 	t_img	img;
+	t_img	floor;
+	t_img	wall;
+	t_img	player_tex;
 	t_object player;
+	t_img	collectible;
+	t_map	map;
+	t_img	exit;
+
 } t_vars;
+
 
 char	*ft_strchr(const char *string, int search);
 void	*ft_memset(void *s, int c, size_t size);
+void	ft_putnbr_fd(int nb);
 
 void	ft_clear_image(t_img img);
 void	ft_draw_object(t_img img, t_object object, unsigned int color);
@@ -53,7 +71,16 @@ t_img	create_img(void *mlx, t_img img, int width, int height);
 
 void	on_key_press(int key, void *param);
 
-int ft_map_check(void);
+int ft_check_cara(char c);
+int	ft_line_check(char *line);
+int ft_map_check(int *x, int *y);
+char	**ft_fill_map(char **map, int y);
+char	**ft_create_map(int *x, int *y);
+
+char	*ft_free(char **map, int i);
+
+int	ft_display_map(t_vars vars);
+
+int	ft_draw_floor(t_vars vars);
 
 #endif
-

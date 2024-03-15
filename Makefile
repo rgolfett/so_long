@@ -2,10 +2,13 @@ NAME = so_long
 
 SRCS = main.c \
 	ft_memset.c \
-	ft_parsing.c \
 	ft_strchr.c \
+	ft_putnbr_fd.c \
+	ft_parsing.c \
 	get_next_line.c \
 	get_next_line_utils.c \
+	ft_map.c \
+	ft_texture.c \
 	
 
 INCLUDES =	
@@ -14,7 +17,7 @@ OBJS =	$(SRCS:%.c=%.o)
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -g -Iminilibx-linux
+CFLAGS = -Wall -Wextra -g -Iminilibx-linux -fsanitize=address
 
 all : $(NAME)
 
