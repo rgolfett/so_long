@@ -6,7 +6,7 @@
 /*   By: rgolfett <rgolfett@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 19:22:16 by rgolfett          #+#    #+#             */
-/*   Updated: 2024/03/14 22:23:03 by rgolfett         ###   ########lyon.fr   */
+/*   Updated: 2024/03/15 17:57:10 by rgolfett         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,7 +45,6 @@ t_img	load_img(void *mlx, t_img img, char *texture)
 
 	img.img = mlx_xpm_file_to_image(mlx, texture, &img.width, &img.height);
 	img.data_addr = mlx_get_data_addr(img.img, &bits_per_pixel, &size_line, &endian);
-	//printf("floor img = %p\n", img.img);
 	return (img);
 }
 
@@ -115,7 +114,6 @@ void	on_key_press(int key, void *param)
 	t_vars *vars;
 
 	vars = ((t_vars *)param);
-	printf("p floor img = %p\n", vars->floor.img);
 	if (key == KEY_W)
 	{
 		vars->player.y -= 50;
@@ -126,7 +124,6 @@ void	on_key_press(int key, void *param)
 			vars->movement++;
 			ft_putnbr_fd(vars->movement);			
 		}
-
 	}
 	if (key == KEY_A)
 	{
@@ -164,7 +161,6 @@ void	on_key_press(int key, void *param)
 	}
 	if (key == KEY_ESC)
 	{
-		printf("ESC\n");
 		mlx_loop_end(vars->mlx);
 	}
 	ft_check_collectible_pos(*vars);
@@ -182,7 +178,7 @@ void	on_key_press(int key, void *param)
 	mlx_put_image_to_window(vars->mlx, vars->win, vars->img.img, 0, 0);
 }
 
-int	main()
+int	main(int argc, char **argv)
 {
 	t_vars	vars;
 	
@@ -192,7 +188,8 @@ int	main()
  	vars.mlx = mlx_init();
 	if (vars.mlx == (void*)0)
 		return (-1);
-	vars.map.map = ft_create_map(&vars.map.w, &vars.map.h);
+	vars.map.map = ft_create_map(argv[1], &vars.map.w, &vars.map.h);
+	ft_check_map(vars.map.map);
 	vars.win = mlx_new_window(vars.mlx, (vars.map.w * 50), (vars.map.h * 50), "so_long");
 	vars.img = create_img(vars.mlx, vars.img, (vars.map.w * 50), (vars.map.h * 50));
 	vars.floor = load_img(vars.mlx, vars.floor, "touch-grass.xpm");

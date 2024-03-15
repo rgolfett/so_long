@@ -9,6 +9,7 @@ SRCS = main.c \
 	get_next_line_utils.c \
 	ft_map.c \
 	ft_texture.c \
+	ft_map_parsing.c \
 	
 
 INCLUDES =	

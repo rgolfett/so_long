@@ -73,14 +73,17 @@ void	on_key_press(int key, void *param);
 
 int ft_check_cara(char c);
 int	ft_line_check(char *line);
-int ft_map_check(int *x, int *y);
-char	**ft_fill_map(char **map, int y);
-char	**ft_create_map(int *x, int *y);
+int ft_map_check(char * file, int *x, int *y);
+char	**ft_fill_map(char *file, char **map, int y);
+char	**ft_create_map(char *file, int *x, int *y);
 
 char	*ft_free(char **map, int i);
 
 int	ft_display_map(t_vars vars);
 
 int	ft_draw_floor(t_vars vars);
+
+int	ft_check_map(char **map);
+int	ft_check_map_composure(char **map);
 
 #endif

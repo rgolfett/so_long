@@ -25,14 +25,14 @@ int	ft_line_check(char *line)
 	return (0);
 }
 
-int ft_map_check(int *x, int *y)
+int ft_map_check(char *file, int *x, int *y)
 {
 	char *first_line;
 	char *tmp;
 	int fd;
 	int nb_line;
 
-	fd = open("map.ber", O_RDONLY);
+	fd = open(file, O_RDONLY);
 
 	first_line = get_next_line(fd);
 	tmp = first_line;
@@ -44,14 +44,14 @@ int ft_map_check(int *x, int *y)
 		tmp = get_next_line(fd);
 		nb_line++;
 		if (tmp != NULL && (ft_strlen(first_line) != ft_strlen(tmp)))
-			return (printf("pas bon\n"), -1);
+			return (-1);
 		if (ft_line_check(tmp) == -1)
-			return (printf("bad line\n"), -1);
+			return (-1);
 
 	}
 	*y = nb_line;
 	*x = ft_strlen(first_line);
-	return (printf("c bon\n"), 0);
+	return (0);
 }
 char	*ft_free(char **map, int i)
 {
@@ -64,13 +64,13 @@ char	*ft_free(char **map, int i)
 	return (NULL);
 }
 
-char	**ft_fill_map(char **map, int y)
+char	**ft_fill_map(char *file, char **map, int y)
 {
 	int i;
 	int fd;
 
 	i = 0;
-	fd = open("map.ber", O_RDONLY);
+	fd = open(file, O_RDONLY);
 
 	while (i < (y - 1))
 	{
@@ -83,16 +83,16 @@ char	**ft_fill_map(char **map, int y)
 	return (map);
 }
 
-char	**ft_create_map(int *x, int *y)
+char	**ft_create_map(char *file, int *x, int *y)
 {
 	char **map;
 
-	if (ft_map_check(x, y) == -1)
+	if (ft_map_check(file, x, y) == -1)
 		return (NULL);
 	map = malloc(sizeof(char *) * (*y + 1));
 	if (!map)
 		return (NULL);
-	ft_fill_map(map, *y);
+	ft_fill_map(file, map, *y);
 	*x -= 1;
 	*y -= 1;
 	return (map);
