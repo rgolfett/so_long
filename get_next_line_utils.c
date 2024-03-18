@@ -6,7 +6,7 @@
 /*   By: rgolfett <rgolfett@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/12/12 15:35:13 by rgolfett          #+#    #+#             */
-/*   Updated: 2024/01/03 14:51:00 by rgolfett         ###   ########lyon.fr   */
+/*   Updated: 2024/03/18 09:18:09 by rgolfett         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,8 @@ char	*ft_strjoin(char *s1, char *s2)
 	if (!s1 || s1 == NULL)
 	{
 		s1 = malloc(sizeof(char) * 1);
+		if (!s1)
+			return (NULL);
 		s1[0] = '\0';
 	}
 	str = malloc(sizeof(char) * ((ft_strlen(s1) + ft_strlen(s2)) + 1));

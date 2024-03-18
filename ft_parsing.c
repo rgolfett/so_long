@@ -2,7 +2,7 @@
 #include "get_next_line.h"
 
 
-int ft_check_cara(char c)
+int	ft_check_cara(char c)
 {
 	if (c != '1' && c != '0' && c != 'P' && c != 'E' && c != 'C')
 		return (-1);
@@ -11,7 +11,7 @@ int ft_check_cara(char c)
 
 int	ft_line_check(char *line)
 {
-	int i;
+	int	i;
 
 	i = 0;
 	if (line == NULL)
@@ -24,13 +24,19 @@ int	ft_line_check(char *line)
 	}
 	return (0);
 }
-
-int ft_map_check(char *file, int *x, int *y)
+void	ft_free2(char *s1, char *s2)
 {
-	char *first_line;
-	char *tmp;
-	int fd;
-	int nb_line;
+	free (s1);
+	free (s2);
+}
+
+
+int	ft_map_check(char *file, int *x, int *y)
+{
+	char	*first_line;
+	char	*tmp;
+	int		fd;
+	int		nb_line;
 
 	fd = open(file, O_RDONLY);
 
@@ -38,20 +44,20 @@ int ft_map_check(char *file, int *x, int *y)
 	tmp = first_line;
 	nb_line = 1;
 	if (first_line == NULL || ft_line_check(first_line) == -1)
-		return (-1);
+		return (ft_free2(first_line, tmp), -1);
 	while (tmp != NULL)
 	{
 		tmp = get_next_line(fd);
 		nb_line++;
 		if (tmp != NULL && (ft_strlen(first_line) != ft_strlen(tmp)))
-			return (-1);
+			return (ft_free2(first_line, tmp), -1);
 		if (ft_line_check(tmp) == -1)
-			return (-1);
-
+			return (ft_free2(first_line, tmp), -1);
+		free (tmp);
 	}
 	*y = nb_line;
 	*x = ft_strlen(first_line);
-	return (0);
+	return (ft_free2(first_line, tmp), 0);
 }
 char	*ft_free(char **map, int i)
 {
@@ -66,8 +72,8 @@ char	*ft_free(char **map, int i)
 
 char	**ft_fill_map(char *file, char **map, int y)
 {
-	int i;
-	int fd;
+	int	i;
+	int	fd;
 
 	i = 0;
 	fd = open(file, O_RDONLY);
@@ -85,7 +91,7 @@ char	**ft_fill_map(char *file, char **map, int y)
 
 char	**ft_create_map(char *file, int *x, int *y)
 {
-	char **map;
+	char	**map;
 
 	if (ft_map_check(file, x, y) == -1)
 		return (NULL);

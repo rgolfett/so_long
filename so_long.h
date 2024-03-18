@@ -81,9 +81,26 @@ char	*ft_free(char **map, int i);
 
 int	ft_display_map(t_vars vars);
 
+void	ft_draw_texture(t_img img, t_object object, t_img texture);
 int	ft_draw_floor(t_vars vars);
+int	ft_draw_walls(t_vars vars);
+int	ft_draw_collectibles(t_vars vars);
+int	ft_draw_exit(t_vars vars);
+
+int	ft_find_player(t_vars vars, int *x, int *y);
+
+int	*ft_fill_tab(int *tab);
+
+char **ft_create_cpy_map(char **map);
+char **ft_fill_cpy_map(char **map, char **map_cpy);
 
 int	ft_check_map(char **map);
 int	ft_check_map_composure(char **map);
+int	ft_check_map_wall(char **map);
+void	ft_check_flood(char **map_cpy, int x, int y);
+void	ft_check_path(char **map_cpy);
+int	ft_check_map_end(char **map);
+
+void	ft_find_player_pos(char **map, int *x, int *y);
 
 #endif

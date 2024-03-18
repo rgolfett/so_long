@@ -2,7 +2,6 @@
 
 int	ft_display_map(t_vars vars)
 {
-	//mlx_put_image_to_window(vars.mlx, vars.win, vars.img.img, 0, 0);
 	ft_draw_walls(vars);
 	ft_draw_collectibles(vars);
 	ft_draw_floor(vars);
@@ -13,10 +12,10 @@ int	ft_display_map(t_vars vars)
 
 int	ft_draw_walls(t_vars vars)
 {
-	char **map;
-	int x;
-	int y;
-	t_object wall;
+	char		**map;
+	int			x;
+	int			y;
+	t_object	wall;
 
 	y = 0;
 	x = 0;
@@ -42,10 +41,10 @@ int	ft_draw_walls(t_vars vars)
 
 int	ft_draw_collectibles(t_vars vars)
 {
-	char **map;
-	int x;
-	int y;
-	t_object collectible;
+	char		**map;
+	int			x;
+	int			y;
+	t_object 	collectible;
 
 	y = 0;
 	x = 0;
@@ -70,10 +69,10 @@ int	ft_draw_collectibles(t_vars vars)
 
 int	ft_draw_exit(t_vars vars)
 {
-	char **map;
-	int x;
-	int y;
-	t_object exit;
+	char		**map;
+	int			x;
+	int			y;
+	t_object	exit;
 
 	y = 0;
 	x = 0;
@@ -98,8 +97,8 @@ int	ft_draw_exit(t_vars vars)
 
 void	ft_draw_texture(t_img img, t_object object, t_img texture)
 {
-	int tmp;
-	int tmpy;
+	int	tmp;
+	int	tmpy;
 
 	int width_sq = 50 + object.x;
 	int height_sq = 50 + object.y;
@@ -119,10 +118,10 @@ void	ft_draw_texture(t_img img, t_object object, t_img texture)
 
 int	ft_draw_floor(t_vars vars)
 {
-	char **map;
-	int x;
-	int y;
-	t_object floor;
+	char		**map;
+	int			x;
+	int			y;
+	t_object	floor;
 
 	y = 0;
 	x = 0;
@@ -147,7 +146,8 @@ int	ft_draw_floor(t_vars vars)
 
 int	ft_find_player(t_vars vars, int *x, int *y)
 {
-	char **map;
+	char	**map;
+
 	*y = 0;
 	*x = 0;
 	

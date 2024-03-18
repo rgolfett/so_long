@@ -6,7 +6,7 @@
 /*   By: rgolfett <rgolfett@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 19:22:16 by rgolfett          #+#    #+#             */
-/*   Updated: 2024/03/15 17:57:10 by rgolfett         ###   ########lyon.fr   */
+/*   Updated: 2024/03/18 12:47:35 by rgolfett         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,9 +21,9 @@ void	ft_clear_image(t_img img)
 
 void ft_draw_object(t_img img, t_object object, unsigned int color)
 {
-	int tmp;
-	int width_sq = 50 + object.x;
-	int height_sq = 50 + object.y;
+	int	tmp;
+	int	width_sq = 50 + object.x;
+	int	height_sq = 50 + object.y;
 	while (object.y < height_sq)
 	{
 		tmp = object.x;
@@ -39,9 +39,9 @@ void ft_draw_object(t_img img, t_object object, unsigned int color)
 
 t_img	load_img(void *mlx, t_img img, char *texture)
 {
-	int bits_per_pixel;
-	int size_line;
-	int endian;
+	int	bits_per_pixel;
+	int	size_line;
+	int	endian;
 
 	img.img = mlx_xpm_file_to_image(mlx, texture, &img.width, &img.height);
 	img.data_addr = mlx_get_data_addr(img.img, &bits_per_pixel, &size_line, &endian);
@@ -50,27 +50,24 @@ t_img	load_img(void *mlx, t_img img, char *texture)
 
 t_img	create_img(void *mlx, t_img img, int width, int height)
 {
-	int bits_per_pixel;
-	int size_line;
-	int endian;
+	int	bits_per_pixel;
+	int	size_line;
+	int	endian;
 
 	img.img = mlx_new_image(mlx, width, height);
-	img.data_addr = mlx_get_data_addr(img.img, &bits_per_pixel, &size_line, &endian);
+	img.data_addr = mlx_get_data_addr(img.img, &bits_per_pixel, &size_line, &endian); // char *
 	img.width = width;
 	img.height = height;
 	return (img);
-
 }
 void	ft_check_exit_condition(t_vars vars)
 {
-	char **map;
-	int x;
-	int	y;
-	int collectibles;
+	char	**map;
+	int		x;
+	int		y;
 
 	x = 0;
 	y = 0;
-	collectibles = 0;
 	map = vars.map.map;
 	if (map[vars.player.y / 50][vars.player.x / 50] == 'E')
 	{
@@ -89,9 +86,15 @@ void	ft_check_exit_condition(t_vars vars)
 	}
 }
 
+int	ft_close(t_vars *vars)
+{
+	mlx_loop_end(vars->mlx);
+	return (0);
+}
+
 void	ft_check_collectible_pos(t_vars vars)
 {
-	char **map;
+	char	**map;
 
 	map = vars.map.map;
 	if (map[vars.player.y / 50][vars.player.x / 50] == 'C')
@@ -111,7 +114,7 @@ int	ft_check_player_pos(t_vars vars)
 
 void	on_key_press(int key, void *param)
 {
-	t_vars *vars;
+	t_vars	*vars;
 
 	vars = ((t_vars *)param);
 	if (key == KEY_W)
@@ -182,6 +185,7 @@ int	main(int argc, char **argv)
 {
 	t_vars	vars;
 	
+	(void)argc;
 	vars.movement = 0;
 	vars.player.x = 0;
 	vars.player.y = 0;
@@ -204,6 +208,17 @@ int	main(int argc, char **argv)
 	ft_display_map(vars);
 	mlx_put_image_to_window(vars.mlx, vars.win, vars.img.img, 0, 0);
 	mlx_key_hook(vars.win, (void *)on_key_press, &vars);
+	mlx_hook(vars.win, 17, 0, ft_close, &vars);
 	mlx_loop(vars.mlx);
+	mlx_destroy_window(vars.mlx, vars.win);
+	mlx_destroy_image(vars.mlx, vars.img.img);
+	mlx_destroy_image(vars.mlx, vars.wall.img);
+	mlx_destroy_image(vars.mlx, vars.floor.img);
+	mlx_destroy_image(vars.mlx, vars.exit.img);
+	mlx_destroy_image(vars.mlx, vars.collectible.img);
+	mlx_destroy_image(vars.mlx, vars.player_tex.img);
+	mlx_destroy_display(vars.mlx);
+	free(vars.mlx);
+	ft_free(vars.map.map, vars.map.h);
 	return (0);
 }
