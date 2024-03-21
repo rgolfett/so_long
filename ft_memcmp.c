@@ -1,22 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_texture.c                                       :+:      :+:    :+:   */
+/*   ft_memcmp.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rgolfett <rgolfett@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/21 08:53:14 by rgolfett          #+#    #+#             */
-/*   Updated: 2024/03/21 08:57:55 by rgolfett         ###   ########lyon.fr   */
+/*   Created: 2024/03/21 10:05:29 by rgolfett          #+#    #+#             */
+/*   Updated: 2024/03/21 11:26:48 by rgolfett         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-char	**ft_image_to_texture(t_vars vars)
+int	ft_memcmp(const void *s1, const void *s2, size_t n)
 {
-	char	**texture;
+	size_t			i;
+	unsigned char	*s1cpy;
+	unsigned char	*s2cpy;
 
-	texture = mlx_xpm_file_to_image
-		(vars.mlx, "touch grass", &vars.map.w, &vars.map.h);
-	return (texture);
+	i = 0;
+	s1cpy = (unsigned char *)s1;
+	s2cpy = (unsigned char *)s2;
+	if (!n || n == 0)
+		return (0);
+	while (s1cpy[i] == s2cpy[i] && (n - 1) > i)
+		i++;
+	return (s1cpy[i] - s2cpy[i]);
 }

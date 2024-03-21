@@ -1,7 +1,9 @@
 NAME = so_long
 
 SRCS = main.c \
+	ft_so_long.c \
 	ft_memset.c \
+	ft_memcmp.c \
 	ft_strchr.c \
 	ft_putnbr_fd.c \
 	ft_parsing.c \
@@ -10,7 +12,12 @@ SRCS = main.c \
 	ft_map.c \
 	ft_texture.c \
 	ft_map_parsing.c \
-	
+	ft_map_composure_parsing.c \
+	ft_draw.c \
+	ft_key_press.c \
+	ft_free.c \
+	ft_img.c \
+	ft_exit.c \
 
 INCLUDES =	
 

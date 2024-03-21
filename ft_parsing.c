@@ -1,6 +1,17 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_parsing.c                                       :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rgolfett <rgolfett@student.42lyon.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/21 08:52:21 by rgolfett          #+#    #+#             */
+/*   Updated: 2024/03/21 08:52:22 by rgolfett         ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "so_long.h"
 #include "get_next_line.h"
-
 
 int	ft_check_cara(char c)
 {
@@ -24,12 +35,6 @@ int	ft_line_check(char *line)
 	}
 	return (0);
 }
-void	ft_free2(char *s1, char *s2)
-{
-	free (s1);
-	free (s2);
-}
-
 
 int	ft_map_check(char *file, int *x, int *y)
 {
@@ -39,7 +44,6 @@ int	ft_map_check(char *file, int *x, int *y)
 	int		nb_line;
 
 	fd = open(file, O_RDONLY);
-
 	first_line = get_next_line(fd);
 	tmp = first_line;
 	nb_line = 1;
@@ -59,16 +63,6 @@ int	ft_map_check(char *file, int *x, int *y)
 	*x = ft_strlen(first_line);
 	return (ft_free2(first_line, tmp), 0);
 }
-char	*ft_free(char **map, int i)
-{
-	while (i >= 0)
-	{
-		free(map[i]);
-		i--;
-	}
-	free(map);
-	return (NULL);
-}
 
 char	**ft_fill_map(char *file, char **map, int y)
 {
@@ -77,7 +71,6 @@ char	**ft_fill_map(char *file, char **map, int y)
 
 	i = 0;
 	fd = open(file, O_RDONLY);
-
 	while (i < (y - 1))
 	{
 		map[i] = get_next_line(fd);
@@ -98,7 +91,8 @@ char	**ft_create_map(char *file, int *x, int *y)
 	map = malloc(sizeof(char *) * (*y + 1));
 	if (!map)
 		return (NULL);
-	ft_fill_map(file, map, *y);
+	if (ft_fill_map(file, map, *y) == NULL)
+		return (NULL);
 	*x -= 1;
 	*y -= 1;
 	return (map);

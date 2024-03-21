@@ -1,22 +1,40 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_texture.c                                       :+:      :+:    :+:   */
+/*   ft_free.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rgolfett <rgolfett@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/21 08:53:14 by rgolfett          #+#    #+#             */
-/*   Updated: 2024/03/21 08:57:55 by rgolfett         ###   ########lyon.fr   */
+/*   Created: 2024/03/18 13:40:27 by rgolfett          #+#    #+#             */
+/*   Updated: 2024/03/21 08:36:51 by rgolfett         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-char	**ft_image_to_texture(t_vars vars)
+void	ft_reverse_free(char **map_cpy, int y)
 {
-	char	**texture;
+	while (map_cpy[y])
+	{
+		free(map_cpy[y]);
+		y++;
+	}
+	free(map_cpy);
+}
 
-	texture = mlx_xpm_file_to_image
-		(vars.mlx, "touch grass", &vars.map.w, &vars.map.h);
-	return (texture);
+char	*ft_free(char **map, int i)
+{
+	while (i >= 0)
+	{
+		free(map[i]);
+		i--;
+	}
+	free(map);
+	return (NULL);
+}
+
+void	ft_free2(char *s1, char *s2)
+{
+	free (s1);
+	free (s2);
 }

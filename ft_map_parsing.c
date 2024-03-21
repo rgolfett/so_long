@@ -1,48 +1,18 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_map_parsing.c                                   :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rgolfett <rgolfett@student.42lyon.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/18 13:39:53 by rgolfett          #+#    #+#             */
+/*   Updated: 2024/03/21 09:04:40 by rgolfett         ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "so_long.h"
 
-
-int	*ft_fill_tab(int *tab)
-{
-	int	i;
-
-	i = 0;
-	while (i < 3)
-	{
-		tab[i] = 0;
-		i++;
-	}
-	return (tab);
-}
-
-int	ft_check_map_composure(char **map)
-{
-	int	x;
-	int	y;
-	int	tab[3];
-
-	y = 0;
-	ft_fill_tab(tab);
-	while (map[y])
-	{
-		x = 0;
-		while (map[y][x])
-		{
-			if (map[y][x] == 'P')
-				tab[0]++;
-			if (map[y][x] == 'C')
-				tab[1]++;
-			if (map[y][x] == 'E')
-				tab[2]++;
-			x++;
-		}
-		y++;
-	}
-	if (tab[0] != 1 || tab[2] != 1 || tab[1] == 0)
-		return (-1);
-	return (0);
-}
-
-int	ft_check_map_wall(char **map)
+int	ft_check_border(char **map)
 {
 	int	x;
 	int	y;
@@ -55,6 +25,15 @@ int	ft_check_map_wall(char **map)
 			return (-1);
 		x++;
 	}
+	return (0);
+}
+
+int	ft_check_map_wall(char **map)
+{
+	int	x;
+	int	y;
+
+	y = 0;
 	while (map[y] != NULL)
 	{
 		x = 0;
@@ -76,22 +55,6 @@ int	ft_check_map_wall(char **map)
 		x++;
 	}
 	return (0);
-}
-
-void	ft_find_player_pos(char **map, int *x, int *y)
-{
-	(*y) = 0;
-	while (map[*y])
-	{
-		(*x) = 0;
-		while (map[*y][*x] && map[*y][*x] != 'P')
-		{
-			(*x)++;
-		}
-		if (map[*y][*x] == 'P')
-			return ;
-		(*y)++;
-	}
 }
 
 void	ft_check_flood(char **map_cpy, int x, int y)
@@ -116,96 +79,24 @@ void	ft_check_path(char **map_cpy)
 	ft_check_flood(map_cpy, x, y);
 }
 
-int	ft_check_map_end(char **map)
-{
-	int	x;
-	int	y;
-	int	tab[4];
-
-	y = 0;
-	ft_fill_tab(tab);
-	while (map[y])
-	{
-		x = 0;
-		while (map[y][x])
-		{
-			if (map[y][x] == 'C')
-				tab[0]++;
-			if (map[y][x] == 'E')
-				tab[1]++;
-			x++;
-		}
-		y++;
-	}
-	if (tab[0] != 0 || tab[1] != 0 )
-		return (printf("end\n"), -1);
-	return (0);
-}
-
-char **ft_fill_cpy_map(char **map, char **map_cpy)
-{
-	int	x;
-	int	y;
-
-	y = 0;
-	while (map[y])
-	{
-		x = 0;
-		while (map[y][x])
-		{
-			map_cpy[y][x] = map[y][x];
-			x++;
-		}
-		map_cpy[y][x] = '\0';
-		y++;
-	}
-	map_cpy[y] = NULL;
-	return (map_cpy);
-}
-
-char **ft_create_cpy_map(char **map)
-{
-	int		x;
-	int		y;
-	char	**map_cpy;
-
-	y = 0;
-	x = 0;
-	while (map[y][x])
-		x++;
-	while (map[y])
-		y++;
-	map_cpy = malloc(sizeof(char *) * (y + 1));
-		if (!map_cpy)
-			return (NULL);
-	while (y >= 0)
-	{
-		map_cpy[y] = malloc(sizeof(char) * (x + 1));
-		if (!map_cpy[y])
-			return (ft_free(map_cpy, (y)), NULL); // invalid free
-		y--;
-	}
-
-	ft_fill_cpy_map(map, map_cpy);
-	return (map_cpy);
-}
-
 int	ft_check_map(char **map)
 {
 	char	**map_cpy;
 	int		i;
 
 	i = 0;
+	if (ft_check_border(map) == -1)
+		return (write(1, "Invalid map\n", 13), -1);
 	if (ft_check_map_composure(map) == -1 || ft_check_map_wall(map) == -1)
-		return (-1);
+		return (write(1, "Invalid map\n", 13), -1);
 	map_cpy = ft_create_cpy_map(map);
 	if (map_cpy == NULL)
 		return (-1);
 	ft_check_path(map_cpy);
 	while (map_cpy[i])
 		i++;
-	if	(ft_check_map_end(map_cpy) == -1)
-		return (printf("Map impossible\n"), ft_free(map_cpy, i), -1);
+	if (ft_check_map_end(map_cpy) == -1)
+		return (write(1, "Invalid map\n", 13), ft_free(map_cpy, i), -1);
 	ft_free (map_cpy, i);
 	return (0);
 }

@@ -5,6 +5,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 # include <stddef.h>
+# include <unistd.h>
 
 # define KEY_W 119
 # define KEY_A 97
@@ -56,18 +57,16 @@ typedef struct	s_vars {
 	t_img	collectible;
 	t_map	map;
 	t_img	exit;
-
 } t_vars;
 
 
 char	*ft_strchr(const char *string, int search);
 void	*ft_memset(void *s, int c, size_t size);
 void	ft_putnbr_fd(int nb);
+int	ft_memcmp(const void *s1, const void *s2, size_t n);
 
-void	ft_clear_image(t_img img);
 void	ft_draw_object(t_img img, t_object object, unsigned int color);
 
-t_img	create_img(void *mlx, t_img img, int width, int height);
 
 void	on_key_press(int key, void *param);
 
@@ -78,8 +77,10 @@ char	**ft_fill_map(char *file, char **map, int y);
 char	**ft_create_map(char *file, int *x, int *y);
 
 char	*ft_free(char **map, int i);
+void	ft_free2(char *s1, char *s2);
+void	ft_reverse_free(char **map_cpy , int y);
 
-int	ft_display_map(t_vars vars);
+void	ft_display_map(t_vars vars);
 
 void	ft_draw_texture(t_img img, t_object object, t_img texture);
 int	ft_draw_floor(t_vars vars);
@@ -94,6 +95,7 @@ int	*ft_fill_tab(int *tab);
 char **ft_create_cpy_map(char **map);
 char **ft_fill_cpy_map(char **map, char **map_cpy);
 
+int	ft_valid_file(char *file);
 int	ft_check_map(char **map);
 int	ft_check_map_composure(char **map);
 int	ft_check_map_wall(char **map);
@@ -102,5 +104,17 @@ void	ft_check_path(char **map_cpy);
 int	ft_check_map_end(char **map);
 
 void	ft_find_player_pos(char **map, int *x, int *y);
+int	ft_check_player_pos(t_vars vars);
+
+void	ft_clear_image(t_img img);
+t_img	load_img(void *mlx, t_img img, char *texture);
+t_img	create_img(void *mlx, t_img img, int width, int height);
+void	ft_load_sprites(t_vars *vars);
+void	ft_destroy_image(t_vars vars);
+
+void	ft_key_press(t_vars *vars, int key);
+
+void	ft_check_exit_condition(t_vars vars);
+int	ft_close(t_vars *vars);
 
 #endif

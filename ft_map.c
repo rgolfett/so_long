@@ -1,6 +1,39 @@
-#include "so_long.h"
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   ft_map.c                                           :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: rgolfett <rgolfett@student.42lyon.fr>      +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2024/03/21 08:48:22 by rgolfett          #+#    #+#             */
+/*   Updated: 2024/03/21 11:27:31 by rgolfett         ###   ########lyon.fr   */
+/*                                                                            */
+/* ************************************************************************** */
 
-int	ft_display_map(t_vars vars)
+#include "so_long.h"
+#include "get_next_line.h"
+
+int	ft_valid_file(char *file)
+{
+	int		i;
+	int		fd;
+	char	*ber;
+
+	i = 0;
+	ber = ".ber";
+	fd = open(file, O_RDONLY);
+	if (fd == -1)
+		return (write(1, "Invalid file\n", 14), -1);
+	while (file[i])
+		i++;
+	if (file[i - 4])
+		i -= 4;
+	if (ft_memcmp(&file[i], ber, 5) != 0)
+		return (write(1, "Invalid file\n", 14));
+	return (0);
+}
+
+void	ft_display_map(t_vars vars)
 {
 	ft_draw_walls(vars);
 	ft_draw_collectibles(vars);
@@ -10,147 +43,12 @@ int	ft_display_map(t_vars vars)
 	mlx_put_image_to_window(vars.mlx, vars.win, vars.floor.img, 100, 50);
 }
 
-int	ft_draw_walls(t_vars vars)
-{
-	char		**map;
-	int			x;
-	int			y;
-	t_object	wall;
-
-	y = 0;
-	x = 0;
-	map = vars.map.map;
-	while (map[y])
-	{
-		while (map[y][x])
-		{
-			if (map[y][x] == '1')
-			{
-				wall.x = x * 50;
-				wall.y = y * 50;
-				ft_draw_texture(vars.img, wall, vars.wall);
-				//ft_draw_object(vars.img, wall, BLUE);
-			}
-			x++;
-		}
-		y++;
-		x = 0;
-	}
-	return (y);
-}
-
-int	ft_draw_collectibles(t_vars vars)
-{
-	char		**map;
-	int			x;
-	int			y;
-	t_object 	collectible;
-
-	y = 0;
-	x = 0;
-	map = vars.map.map;
-	while (map[y])
-	{
-		while (map[y][x])
-		{
-			if (map[y][x] == 'C')
-			{
-				collectible.x = x * 50;
-				collectible.y = y * 50;
-				ft_draw_texture(vars.img, collectible, vars.collectible);
-			}
-			x++;
-		}
-		y++;
-		x = 0;
-	}
-	return (-1);
-}
-
-int	ft_draw_exit(t_vars vars)
-{
-	char		**map;
-	int			x;
-	int			y;
-	t_object	exit;
-
-	y = 0;
-	x = 0;
-	map = vars.map.map;
-	while (map[y])
-	{
-		while (map[y][x])
-		{
-			if (map[y][x] == 'E')
-			{
-				exit.x = x * 50;
-				exit.y = y * 50;
-				ft_draw_texture(vars.img, exit, vars.exit);
-			}
-			x++;
-		}
-		y++;
-		x = 0;
-	}
-	return (-1);
-}
-
-void	ft_draw_texture(t_img img, t_object object, t_img texture)
-{
-	int	tmp;
-	int	tmpy;
-
-	int width_sq = 50 + object.x;
-	int height_sq = 50 + object.y;
-	tmpy = object.y;
-	while (object.y < height_sq)
-	{
-		tmp = object.x;
-		while (object.x < width_sq)
-		{
-			img.data_addr[object.y * img.width + object.x] = texture.data_addr[(object.y - tmpy) * texture.width + (object.x - tmp)];
-			object.x++;
-		}
-		object.y++;
-		object.x = tmp;
-	}
-}
-
-int	ft_draw_floor(t_vars vars)
-{
-	char		**map;
-	int			x;
-	int			y;
-	t_object	floor;
-
-	y = 0;
-	x = 0;
-	map = vars.map.map;
-	while (map[y])
-	{
-		while (map[y][x])
-		{
-			if (map[y][x] == '0')
-			{
-				floor.x = x * 50;
-				floor.y = y * 50;
-				ft_draw_texture(vars.img, floor, vars.floor);
-			}
-			x++;
-		}
-		y++;
-		x = 0;
-	}
-	return (-1);
-}
-
 int	ft_find_player(t_vars vars, int *x, int *y)
 {
 	char	**map;
 
 	*y = 0;
 	*x = 0;
-	
 	map = vars.map.map;
 	while (map[*y])
 	{
@@ -164,4 +62,52 @@ int	ft_find_player(t_vars vars, int *x, int *y)
 		(*x) = 0;
 	}
 	return (-1);
+}
+
+char	**ft_fill_cpy_map(char **map, char **map_cpy)
+{
+	int	x;
+	int	y;
+
+	y = 0;
+	while (map[y])
+	{
+		x = 0;
+		while (map[y][x])
+		{
+			map_cpy[y][x] = map[y][x];
+			x++;
+		}
+		map_cpy[y][x] = '\0';
+		y++;
+	}
+	map_cpy[y] = NULL;
+	return (map_cpy);
+}
+
+char	**ft_create_cpy_map(char **map)
+{
+	int		x;
+	int		y;
+	char	**map_cpy;
+
+	y = 0;
+	x = 0;
+	while (map[y][x])
+		x++;
+	while (map[y])
+		y++;
+	map_cpy = malloc(sizeof(char *) * (y + 1));
+	map_cpy[y] = NULL;
+	if (!map_cpy)
+		return (NULL);
+	while (y > 0)
+	{
+		y--;
+		map_cpy[y] = malloc(sizeof(char) * (x + 1));
+		if (!map_cpy[y])
+			return (ft_reverse_free(map_cpy, (y)), NULL);
+	}
+	ft_fill_cpy_map(map, map_cpy);
+	return (map_cpy);
 }

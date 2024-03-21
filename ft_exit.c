@@ -1,22 +1,45 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_texture.c                                       :+:      :+:    :+:   */
+/*   ft_exit.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: rgolfett <rgolfett@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/21 08:53:14 by rgolfett          #+#    #+#             */
-/*   Updated: 2024/03/21 08:57:55 by rgolfett         ###   ########lyon.fr   */
+/*   Created: 2024/03/21 08:16:02 by rgolfett          #+#    #+#             */
+/*   Updated: 2024/03/21 08:16:39 by rgolfett         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "so_long.h"
 
-char	**ft_image_to_texture(t_vars vars)
+void	ft_check_exit_condition(t_vars vars)
 {
-	char	**texture;
+	char	**map;
+	int		x;
+	int		y;
 
-	texture = mlx_xpm_file_to_image
-		(vars.mlx, "touch grass", &vars.map.w, &vars.map.h);
-	return (texture);
+	x = 0;
+	y = 0;
+	map = vars.map.map;
+	if (map[vars.player.y / 50][vars.player.x / 50] == 'E')
+	{
+		while (map[y])
+		{
+			while (map[y][x])
+			{
+				if (map[y][x] == 'C')
+					return ;
+				x++;
+			}
+			y++;
+			x = 0;
+		}
+		mlx_loop_end(vars.mlx);
+	}
+}
+
+int	ft_close(t_vars *vars)
+{
+	mlx_loop_end(vars->mlx);
+	return (0);
 }
