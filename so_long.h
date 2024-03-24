@@ -6,7 +6,7 @@
 /*   By: rgolfett <rgolfett@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/24 15:55:35 by rgolfett          #+#    #+#             */
-/*   Updated: 2024/03/24 16:19:36 by rgolfett         ###   ########lyon.fr   */
+/*   Updated: 2024/03/24 16:44:49 by rgolfett         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -116,7 +116,7 @@ int		ft_check_player_pos(t_vars vars);
 void	ft_clear_image(t_img img);
 t_img	load_img(void *mlx, t_img img, char *texture);
 t_img	create_img(void *mlx, t_img img, int width, int height);
-int	ft_load_sprites(t_vars *vars);
+int		ft_load_sprites(t_vars *vars);
 void	ft_destroy_image(t_vars vars);
 
 void	ft_key_press(t_vars *vars, int key);

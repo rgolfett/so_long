@@ -9,7 +9,6 @@ SRCS = main.c \
 	get_next_line.c \
 	get_next_line_utils.c \
 	ft_map.c \
-	ft_texture.c \
 	ft_map_parsing.c \
 	ft_map_composure_parsing.c \
 	ft_draw.c \
@@ -24,7 +23,8 @@ OBJS =	$(SRCS:%.c=%.o)
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -g -Iminilibx-linux -fsanitize=address
+CFLAGS = -Wall -Wextra -g -Iminilibx-linux 
+#-fsanitize=address
 
 all : $(NAME)
 

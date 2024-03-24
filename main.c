@@ -6,7 +6,7 @@
 /*   By: rgolfett <rgolfett@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/07 19:22:16 by rgolfett          #+#    #+#             */
-/*   Updated: 2024/03/24 16:18:46 by rgolfett         ###   ########lyon.fr   */
+/*   Updated: 2024/03/24 16:38:45 by rgolfett         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -83,7 +83,7 @@ int	main(int argc, char **argv)
 	vars = (t_vars){0};
 	vars.mlx = mlx_init();
 	if (vars.mlx == (void *)0 || ft_valid_file(argv[1]) == -1)
-		return (-1);
+		return (ft_destroy_image(vars), -1);
 	vars.map.map = ft_create_map(argv[1], &vars.map.w, &vars.map.h);
 	if (ft_check_map(vars.map.map) == -1)
 		return (ft_destroy_image(vars), -1);

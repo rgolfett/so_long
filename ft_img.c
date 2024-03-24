@@ -6,7 +6,7 @@
 /*   By: rgolfett <rgolfett@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 08:09:41 by rgolfett          #+#    #+#             */
-/*   Updated: 2024/03/24 16:22:17 by rgolfett         ###   ########lyon.fr   */
+/*   Updated: 2024/03/24 16:45:31 by rgolfett         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ t_img	load_img(void *mlx, t_img img, char *texture)
 	if (img.img)
 	{
 		img.data_addr = (unsigned int *)
-		mlx_get_data_addr(img.img, &bits_per_pixel, &size_line, &endian);
+			mlx_get_data_addr(img.img, &bits_per_pixel, &size_line, &endian);
 	}
 	return (img);
 }
@@ -92,5 +92,7 @@ void	ft_destroy_image(t_vars vars)
 	if (vars.mlx != NULL)
 		mlx_destroy_display(vars.mlx);
 	free(vars.mlx);
+	if (!vars.map.map)
+		return ;
 	ft_free(vars.map.map, vars.map.h);
 }
