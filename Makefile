@@ -17,14 +17,14 @@ SRCS = main.c \
 	ft_img.c \
 	ft_exit.c \
 
-INCLUDES =	
+INCLUDES = get_next_line.h \
+		   so_long.h \
 
 OBJS =	$(SRCS:%.c=%.o)
 
 CC = cc
 
-CFLAGS = -Wall -Wextra -g -Iminilibx-linux 
-#-fsanitize=address
+CFLAGS = -Wall -Wextra -Werror -Iminilibx-linux
 
 all : $(NAME)
 
@@ -35,11 +35,11 @@ minilibx-linux/libmlx.a :
 		$(MAKE) -C minilibx-linux
 
 clean :
-		rm $(OBJS) 
+		rm -f $(OBJS) 
 		$(MAKE) clean -C minilibx-linux
 
 fclean : clean 
-		rm $(NAME)
+		rm -f $(NAME)
 
 re : fclean all
 
