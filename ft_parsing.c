@@ -6,7 +6,7 @@
 /*   By: rgolfett <rgolfett@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 08:52:21 by rgolfett          #+#    #+#             */
-/*   Updated: 2024/03/24 16:44:07 by rgolfett         ###   ########lyon.fr   */
+/*   Updated: 2024/03/24 16:55:46 by rgolfett         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ int	ft_map_check(char *file, int *x, int *y)
 	tmp = first_line;
 	nb_line = 1;
 	if (first_line == NULL || ft_line_check(first_line) == -1)
-		return (ft_free2(first_line, tmp), -1);
+		return (close (fd), ft_free2(first_line, tmp), -1);
 	while (tmp != NULL)
 	{
 		tmp = get_next_line(fd);

@@ -6,7 +6,7 @@
 /*   By: rgolfett <rgolfett@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 13:39:53 by rgolfett          #+#    #+#             */
-/*   Updated: 2024/03/21 09:04:40 by rgolfett         ###   ########lyon.fr   */
+/*   Updated: 2024/03/24 16:57:39 by rgolfett         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -84,6 +84,8 @@ int	ft_check_map(char **map)
 	char	**map_cpy;
 	int		i;
 
+	if (map == NULL)
+		return (write(1, "Invalid file\n", 14), -1);
 	i = 0;
 	if (ft_check_border(map) == -1)
 		return (write(1, "Invalid map\n", 13), -1);

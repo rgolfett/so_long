@@ -6,7 +6,7 @@
 /*   By: rgolfett <rgolfett@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 08:05:11 by rgolfett          #+#    #+#             */
-/*   Updated: 2024/03/21 08:48:44 by rgolfett         ###   ########lyon.fr   */
+/*   Updated: 2024/03/24 17:06:03 by rgolfett         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,7 @@ int	ft_check_map_end(char **map)
 		y++;
 	}
 	if (tab[0] != 0 || tab[1] != 0)
-		return (printf("invalid map\n"), -1);
+		return (-1);
 	return (0);
 }
 
