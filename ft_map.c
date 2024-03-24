@@ -6,7 +6,7 @@
 /*   By: rgolfett <rgolfett@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 08:48:22 by rgolfett          #+#    #+#             */
-/*   Updated: 2024/03/21 11:27:31 by rgolfett         ###   ########lyon.fr   */
+/*   Updated: 2024/03/22 11:34:36 by rgolfett         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,8 +28,8 @@ int	ft_valid_file(char *file)
 		i++;
 	if (file[i - 4])
 		i -= 4;
-	if (ft_memcmp(&file[i], ber, 5) != 0)
-		return (write(1, "Invalid file\n", 14));
+	if (ft_memcmp(&file[i], ber, 4) != 0)
+		return (write(1, "Invalid file\n", 14), -1);
 	return (0);
 }
 
