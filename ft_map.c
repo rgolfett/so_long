@@ -6,7 +6,7 @@
 /*   By: rgolfett <rgolfett@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 08:48:22 by rgolfett          #+#    #+#             */
-/*   Updated: 2024/03/22 11:34:36 by rgolfett         ###   ########lyon.fr   */
+/*   Updated: 2024/03/24 16:09:36 by rgolfett         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,13 +24,21 @@ int	ft_valid_file(char *file)
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
 		return (write(1, "Invalid file\n", 14), -1);
+	close(fd);
 	while (file[i])
 		i++;
-	if (file[i - 4])
-		i -= 4;
+	if (i < 4)
+	{
+		write(1, "Invalid file\n", 14);
+		return (-1);
+	}
+	i -= 4;
 	if (ft_memcmp(&file[i], ber, 4) != 0)
-		return (write(1, "Invalid file\n", 14), -1);
-	return (0);
+	{
+		write(1, "Invalid file\n", 14);
+		return (-1);
+	}
+	return (close(fd), 0);
 }
 
 void	ft_display_map(t_vars vars)
@@ -98,9 +106,9 @@ char	**ft_create_cpy_map(char **map)
 	while (map[y])
 		y++;
 	map_cpy = malloc(sizeof(char *) * (y + 1));
-	map_cpy[y] = NULL;
 	if (!map_cpy)
 		return (NULL);
+	map_cpy[y] = NULL;
 	while (y > 0)
 	{
 		y--;

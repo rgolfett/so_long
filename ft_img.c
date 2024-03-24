@@ -6,7 +6,7 @@
 /*   By: rgolfett <rgolfett@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 08:09:41 by rgolfett          #+#    #+#             */
-/*   Updated: 2024/03/21 09:01:09 by rgolfett         ###   ########lyon.fr   */
+/*   Updated: 2024/03/24 16:22:17 by rgolfett         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,8 +25,11 @@ t_img	load_img(void *mlx, t_img img, char *texture)
 	int	endian;
 
 	img.img = mlx_xpm_file_to_image(mlx, texture, &img.width, &img.height);
-	img.data_addr = (unsigned int *)
+	if (img.img)
+	{
+		img.data_addr = (unsigned int *)
 		mlx_get_data_addr(img.img, &bits_per_pixel, &size_line, &endian);
+	}
 	return (img);
 }
 
@@ -37,25 +40,37 @@ t_img	create_img(void *mlx, t_img img, int width, int height)
 	int	endian;
 
 	img.img = mlx_new_image(mlx, width, height);
-	img.data_addr = (unsigned int *)
-		mlx_get_data_addr(img.img, &bits_per_pixel, &size_line, &endian);
-	img.width = width;
-	img.height = height;
+	if (img.img)
+	{
+		img.data_addr = (unsigned int *)
+			mlx_get_data_addr(img.img, &bits_per_pixel, &size_line, &endian);
+		img.width = width;
+		img.height = height;
+	}
 	return (img);
 }
 
-void	ft_load_sprites(t_vars *vars)
+int	ft_load_sprites(t_vars *vars)
 {
 	vars->win = mlx_new_window(vars->mlx, (vars->map.w * 50),
 			(vars->map.h * 50), "so_long");
+	if (vars-> win == NULL)
+		return (-1);
 	vars->img = create_img(vars->mlx, vars->img,
 			(vars->map.w * 50), (vars->map.h * 50));
 	vars->floor = load_img(vars->mlx, vars->floor, "touch-grass.xpm");
+	if (vars->img.img == NULL || vars->floor.img == NULL)
+		return (-1);
 	vars->wall = load_img(vars->mlx, vars->wall, "bush.xpm");
 	vars->collectible = load_img(vars->mlx, vars->collectible,
 			"pomegrenade.xpm");
+	if (vars->wall.img == NULL || vars->collectible.img == NULL)
+		return (-1);
 	vars->player_tex = load_img(vars->mlx, vars->player_tex, "baby_gryff.xpm");
 	vars->exit = load_img(vars->mlx, vars->exit, "exit.xpm");
+	if (vars->player_tex.img == NULL || vars->exit.img == NULL)
+		return (-1);
+	return (0);
 }
 
 void	ft_destroy_image(t_vars vars)

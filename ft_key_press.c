@@ -6,7 +6,7 @@
 /*   By: rgolfett <rgolfett@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 08:33:25 by rgolfett          #+#    #+#             */
-/*   Updated: 2024/03/21 09:02:46 by rgolfett         ###   ########lyon.fr   */
+/*   Updated: 2024/03/24 16:12:04 by rgolfett         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,17 +14,16 @@
 
 void	w_key_press(t_vars *vars)
 {
+	vars->player.y -= 50;
+	if (ft_check_player_pos(*vars) == -1)
+		vars->player.y += 50;
+	else
 	{
-		vars->player.y -= 50;
-		if (ft_check_player_pos(*vars) == -1)
-			vars->player.y += 50;
-		else
-		{
-			vars->movement++;
-			ft_putnbr_fd(vars->movement);
-		}
+		vars->movement++;
+		ft_putnbr_fd(vars->movement);
 	}
 }
+
 
 void	a_key_press(t_vars *vars)
 {

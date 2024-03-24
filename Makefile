@@ -1,7 +1,6 @@
 NAME = so_long
 
 SRCS = main.c \
-	ft_so_long.c \
 	ft_memset.c \
 	ft_memcmp.c \
 	ft_strchr.c \
