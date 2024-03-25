@@ -6,7 +6,7 @@
 /*   By: rgolfett <rgolfett@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 13:39:53 by rgolfett          #+#    #+#             */
-/*   Updated: 2024/03/24 16:57:39 by rgolfett         ###   ########lyon.fr   */
+/*   Updated: 2024/03/25 12:04:17 by rgolfett         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -85,12 +85,12 @@ int	ft_check_map(char **map)
 	int		i;
 
 	if (map == NULL)
-		return (write(1, "Invalid file\n", 14), -1);
+		return (write(1, "Error\nInvalid file\n", 19), -1);
 	i = 0;
 	if (ft_check_border(map) == -1)
-		return (write(1, "Invalid map\n", 13), -1);
+		return (write(1, "Error\nInvalid map\n", 18), -1);
 	if (ft_check_map_composure(map) == -1 || ft_check_map_wall(map) == -1)
-		return (write(1, "Invalid map\n", 13), -1);
+		return (write(1, "Error\nInvalid map\n", 18), -1);
 	map_cpy = ft_create_cpy_map(map);
 	if (map_cpy == NULL)
 		return (-1);
@@ -98,7 +98,7 @@ int	ft_check_map(char **map)
 	while (map_cpy[i])
 		i++;
 	if (ft_check_map_end(map_cpy) == -1)
-		return (write(1, "Invalid map\n", 13), ft_free(map_cpy, i), -1);
+		return (write(1, "Error\nInvalid map\n", 18), ft_free(map_cpy, i), -1);
 	ft_free (map_cpy, i);
 	return (0);
 }

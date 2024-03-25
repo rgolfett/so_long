@@ -35,7 +35,7 @@ minilibx-linux/libmlx.a :
 		$(MAKE) -C minilibx-linux
 
 clean :
-		rm -f $(OBJS) 
+		rm -f $(OBJS)
 		$(MAKE) clean -C minilibx-linux
 
 fclean : clean 

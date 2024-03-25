@@ -6,7 +6,7 @@
 /*   By: rgolfett <rgolfett@student.42lyon.fr>      +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/21 08:48:22 by rgolfett          #+#    #+#             */
-/*   Updated: 2024/03/24 16:09:36 by rgolfett         ###   ########lyon.fr   */
+/*   Updated: 2024/03/25 12:02:17 by rgolfett         ###   ########lyon.fr   */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,19 +23,19 @@ int	ft_valid_file(char *file)
 	ber = ".ber";
 	fd = open(file, O_RDONLY);
 	if (fd == -1)
-		return (write(1, "Invalid file\n", 14), -1);
+		return (write(1, "Error\nInvalid file\n", 19), -1);
 	close(fd);
 	while (file[i])
 		i++;
 	if (i < 4)
 	{
-		write(1, "Invalid file\n", 14);
+		write(1, "Error\nInvalid file\n", 19);
 		return (-1);
 	}
 	i -= 4;
 	if (ft_memcmp(&file[i], ber, 4) != 0)
 	{
-		write(1, "Invalid file\n", 14);
+		write(1, "Error\nInvalid file\n", 19);
 		return (-1);
 	}
 	return (close(fd), 0);
